@@ -9,6 +9,7 @@ import (
 
 type jsonStatements []jsonStatement
 type jsonPolicyDocument struct {
+	Id             string
 	Version        string
 	Statement      *jsonStatements
 	PolicyName     *interface{}
@@ -59,10 +60,9 @@ var ErrorLackOfStatements = errors.New("input did not contain any statements")
 var ErrorLooksLikeCloudformation = errors.New("input did not contain any statements " +
 	"but looks like CloudFormation code - this is currently not supported. Look at GitHub Issue #50 for details")
 
-func decode(b []byte) ([]jsonStatement, error) {
+func decode(b []byte) (*jsonPolicyDocument, error) {
 	document := &jsonPolicyDocument{}
 	err := json.Unmarshal(escapeHclSnippetsInJSON(b), document)
-
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +74,7 @@ func decode(b []byte) ([]jsonStatement, error) {
 		return nil, fmt.Errorf("invalid policy input: %w", ErrorLackOfStatements)
 	}
 
-	return *document.Statement, nil
+	return document, nil
 
 }
 

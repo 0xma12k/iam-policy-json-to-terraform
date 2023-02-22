@@ -28,6 +28,8 @@ type hclStatement struct {
 type hclDataSource struct {
 	Type       string         `hcl:",key"`
 	Name       string         `hcl:",key"`
+	Id         string         `hcl:"policy_id" hcle:"omitempty"`
+	Version    string         `hcl:"version" hcle:"omitempty"`
 	Statements []hclStatement `hcl:"statement,squash"`
 }
 
