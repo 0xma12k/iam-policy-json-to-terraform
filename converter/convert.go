@@ -88,8 +88,8 @@ func convertStatements(json jsonStatement) hclStatement {
 
 // Convert reads a JSON policy document and return a string with a terraform policy document definition
 func Convert(policyName string, b []byte) (string, error) {
-	statementsFromJSON, err := decode(b)
-
+	jsonDocument, err := decode(b)
+	statementsFromJSON := *jsonDocument.Statement
 	if err != nil {
 		return "", err
 	}
@@ -103,6 +103,8 @@ func Convert(policyName string, b []byte) (string, error) {
 	dataSource := hclDataSource{
 		Type:       "aws_iam_policy_document",
 		Name:       policyName,
+		Id:         jsonDocument.Id,
+		Version:    jsonDocument.Version,
 		Statements: hclStatements,
 	}
 

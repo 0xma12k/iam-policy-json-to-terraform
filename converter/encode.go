@@ -14,7 +14,7 @@ type hclPrincipal struct {
 }
 
 type hclStatement struct {
-	Sid           string         `hcl:"sid"`
+	Sid           string         `hcl:"sid" hcle:"omitempty"`
 	Effect        string         `hcl:"effect"`
 	Resources     []string       `hcl:"resources"`
 	NotResources  []string       `hcl:"not_resources"`
@@ -28,6 +28,8 @@ type hclStatement struct {
 type hclDataSource struct {
 	Type       string         `hcl:",key"`
 	Name       string         `hcl:",key"`
+	Id         string         `hcl:"policy_id" hcle:"omitempty"`
+	Version    string         `hcl:"version" hcle:"omitempty"`
 	Statements []hclStatement `hcl:"statement,squash"`
 }
 
